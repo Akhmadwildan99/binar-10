@@ -1,4 +1,5 @@
 import '../styles/LandingPages.css';
+import '../styles/register.css';
 import Head from 'next/head';
 import {AppProps} from 'next/app'
 import script from 'next/script';
