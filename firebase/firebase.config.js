@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 
 const firebaseConfig = {
@@ -20,6 +20,22 @@ export async function setSignUp(email, password) {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log('user', user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('error', errorCode, errorMessage);
+    });
+}
+
+export async function setSignIn(email, password) {
+    const auth = getAuth();
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user);
+      localStorage.setItem(JSON.stringify(user.uid));
     })
     .catch((error) => {
       const errorCode = error.code;

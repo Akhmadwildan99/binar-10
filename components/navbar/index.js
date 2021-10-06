@@ -10,14 +10,14 @@ export default function Navbar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav nav-1 ">
-                    <a className="nav-link">Home</a>
+                    <Link href="/"><a className="nav-link">Home</a></Link>
                     <a className="nav-link" >Work</a>
                     <a className="nav-link" >Contact</a>
                     <a className="nav-link">About me</a>
                 </div>
                 <div className="navbar-nav nav-2 ">
                     <Link href="/register"><a className="nav-link" >Sign up</a></Link>
-                    <a className="nav-link" >Login</a>
+                    <Link href="/login"><a className="nav-link" >Login</a></Link>
                 </div>
             </div>
         </div>
