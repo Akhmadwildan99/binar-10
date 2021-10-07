@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore } from 'firebase/firestore';
 import {getStorage} from 'firebase/storage'
 
 
@@ -15,7 +16,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const storageFire = getStorage(app);
-export {app, storageFire}
+const db = getFirestore(app);
+export {app, storageFire, db}
 
 export async function setSignUp(email, password) {
     const auth = getAuth();
@@ -33,16 +35,18 @@ export async function setSignUp(email, password) {
 
 export async function setSignIn(email, password) {
     const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user);
-      localStorage.setItem(JSON.stringify(user.uid));
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('error', errorCode, errorMessage);
-    });
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const response = res.user.uid;
+    return response;
 }
+
+// export async function setAvatar(image, storageFire) {
+//   const storage = storageFire
+//   const storageRef = ref(storage, image.name);
+
+//   // 'file' comes from the Blob or File API
+//   const upload = await uploadBytes(storageRef, image);
+//   console.log(upload)
+//   const url = await getDownloadURL(storageRef)
+//   return url
+// }

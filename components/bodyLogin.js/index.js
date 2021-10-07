@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { setSignIn } from '../../firebase/firebase.config';
+// import {useRouter} from 'next/router';
 
 export default function BodyLogin() {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [errorBlank, setErrorBlank] = useState("");
-
+  // const router = useRouter()
 
   const handleLogin = async (e) => {
       e.preventDefault();
       if(!email || !password) {
         setErrorBlank("Email dan password wajib di isi");
       } else {
-          await setSignIn(email, password);
+        const auth = await setSignIn(email, password);
+        localStorage.setItem("userId", JSON.stringify(auth));
+        // router.push('/playerGame');
       }
   };
   return (
