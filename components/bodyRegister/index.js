@@ -1,18 +1,22 @@
 
 import {useState, useEffect} from 'react'
-import {setSignUp} from '../../firebase/firebase.config'
+import {setSignUp} from '../../firebase/firebase.config';
+import {useRouter} from 'next/router'
 
 export default function Bodyregister() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [register, setRegister] = useState(false);
 
+    const router = useRouter();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if(email !== "" && password !== "") {
                 await setSignUp(email, password);
-                setRegister(true)
+                setRegister(true);
+                router.push('/login');
             } 
         } catch (err) {
             setRegister(false);

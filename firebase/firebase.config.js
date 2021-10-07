@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {getStorage} from 'firebase/storage'
 
 
 const firebaseConfig = {
@@ -13,6 +14,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const storageFire = getStorage(app);
+export {app, storageFire}
 
 export async function setSignUp(email, password) {
     const auth = getAuth();
