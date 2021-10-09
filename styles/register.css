@@ -81,7 +81,7 @@ button{
   outline: none;
 }
 
-.btn.disable {
+button.btn.disable {
   border-radius: 16px;
   border: 1px solid gray;
   background-color: grey ;

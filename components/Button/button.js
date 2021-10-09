@@ -1,8 +1,6 @@
-export default function Button({onClick, title, isLoading}) {
-    if(isLoading) {
-        <button className="btn disable" >
-            Loading ...
-        </button>
+const Button = ({onClick, title, loading}) => {
+    if(loading === true) {
+        return <button className="btn disable" > Loading ...</button>
     }
     return(
         <button className="button-register"type="submit" onClick={onClick}>
@@ -10,3 +8,5 @@ export default function Button({onClick, title, isLoading}) {
         </button>
     );
 }
+
+export default Button;
