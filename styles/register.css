@@ -81,6 +81,20 @@ button{
   outline: none;
 }
 
+.btn.disable {
+  border-radius: 16px;
+  border: 1px solid gray;
+  background-color: grey ;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  margin: 1rem 0;
+}
+
 a{
   display: block;
   color: #f4f4f4;

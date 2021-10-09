@@ -1,22 +1,30 @@
-
 import {useState, useEffect} from 'react'
 import {setSignUp} from '../../firebase/firebase.config';
-import {useRouter} from 'next/router'
+// import {useRouter} from 'next/router';
+import Button from '../Button/button';
+import connect from 'react-redux';
 
-export default function Bodyregister() {
+
+function Bodyregister() {
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [register, setRegister] = useState(false);
 
-    const router = useRouter();
+    // const router = useRouter();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if(email !== "" && password !== "") {
-                await setSignUp(email, password);
+                const res = await setSignUp(email, password);
+                if(res) {
+                    setEmail("")
+                    setPassword("")
+                }
                 setRegister(true);
-                router.push('/login');
+                // router.push('/login');
             } 
         } catch (err) {
             setRegister(false);
@@ -52,12 +60,7 @@ export default function Bodyregister() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} 
                         required />
-                        <button 
-                        className="button-register"
-                        type="submit" 
-                        onClick={handleSubmit}>
-                            Register
-                        </button>
+                        <Button onClick={handleSubmit} title="Register" />
                     </form>
                 </div>
                 <div className="img-side"></div>
@@ -65,3 +68,7 @@ export default function Bodyregister() {
         </div>
     )
 }
+
+
+
+export default  Bodyregister
