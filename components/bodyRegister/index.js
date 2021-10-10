@@ -24,12 +24,13 @@ function Bodyregister({isLoading, registerAPI}) {
             if(email !== "" && password !== "") {
                 const data ={email, password};
                 // const res = await dispatch(registerAPI(data))
-                const res = await registerAPI(data).catch(err => err)
+                const res = await registerAPI(data);
                 if(res) {
-                    setEmail("")
-                    setPassword("")
+                    setEmail("");
+                    setPassword("");
+                    setRegister(true);
                 }
-                setRegister(true);
+                
                 // router.push('/login');
             } 
         } catch (err) {
@@ -39,7 +40,7 @@ function Bodyregister({isLoading, registerAPI}) {
        
     }
     useEffect(() => {
-        if(register) {
+        if(register === true) {
             setEmail("");
             setPassword("");
         }

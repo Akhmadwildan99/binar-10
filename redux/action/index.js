@@ -1,6 +1,8 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import {app} from '../../firebase/firebase.config';
-import {PRO_LOADING} from '../reducer/typeAction.js';
+import {PRO_LOADING, PRO_LOGIN, CHANGE_USER} from '../reducer/typeAction.js';
+
+
 
 const registerAPI =  (data) => (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -23,4 +25,31 @@ const registerAPI =  (data) => (dispatch) => {
     })
 }
 
-export {registerAPI};
+const loginAPI = (data) => (dispatch) => {
+  dispatch({ type: PRO_LOADING, value : true})
+  new Promise((resolve, reject) => {
+    const auth = getAuth(app);
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((res) => {
+        const dataUser = {
+          user: res.user.email,
+          uid: res.user.uid
+        }
+        dispatch({ type: PRO_LOADING, value :false});
+        dispatch({ type: PRO_LOGIN, value :true});
+        dispatch({ type: CHANGE_USER, value :dataUser});
+        resolve()
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('error', errorCode, errorMessage);
+        dispatch({ type: PRO_LOADING, value : false});
+        dispatch({ type:PRO_LOGIN, value: false})
+        reject();
+      })
+
+  })
+}
+
+export {registerAPI, loginAPI};
