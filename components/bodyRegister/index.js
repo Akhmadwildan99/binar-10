@@ -5,6 +5,7 @@ import Button from '../Button/button';
 import {registerAPI} from '../../redux/action'
 // import {useSelector, useDispatch} from 'react-redux';
 import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 
 function Bodyregister({isLoading, registerAPI}) {
@@ -17,13 +18,13 @@ function Bodyregister({isLoading, registerAPI}) {
     // const loading = useSelector(state => state.isLoading)
     // const dispatch = useDispatch();
 
-    const handleSubmit =(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if(email !== "" && password !== "") {
                 const data ={email, password};
                 // const res = await dispatch(registerAPI(data))
-                const res =  registerAPI(data)
+                const res = await registerAPI(data).catch(err => err)
                 if(res) {
                     setEmail("")
                     setPassword("")
@@ -37,7 +38,6 @@ function Bodyregister({isLoading, registerAPI}) {
         }
        
     }
-
     useEffect(() => {
         if(register) {
             setEmail("");
@@ -65,7 +65,7 @@ function Bodyregister({isLoading, registerAPI}) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} 
                         required />
-                        <Button onClick={handleSubmit} title="Register" loading={isLoading} />
+                        <Button onClick={handleSubmit} title={"Register"} loading={isLoading} />
                     </form>
                 </div>
                 <div className="img-side"></div>
@@ -75,11 +75,11 @@ function Bodyregister({isLoading, registerAPI}) {
 }
 
 const reduxState = (state) => ({
-    isLoading: state.isLoading
+    isLoading: state.reducUser.isLoading
 });
 
 const reduxDispatch = (dispatch) => ({
-    registerAPI: (data) => dispatch(registerAPI(data))
+    registerAPI: bindActionCreators(registerAPI, dispatch)
 })
 
 export default connect(reduxState, reduxDispatch) (Bodyregister)
