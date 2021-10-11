@@ -54,7 +54,7 @@ function Navbar({isLogin,user, deleteUser, logout}) {
                 {isLogin ? 
                 <div className="navbar-nav nav-2">
                     <a className="nav-link" onClick={logoutSystem}>Log out</a>
-                    <Link href="/playergame"><img src={player ? player.imageUrl : "/images/avatar.png" } className="images-navbar" /></Link>
+                    <Link href="/playerGame"><img src={player ? player.imageUrl : "/images/avatar.png" } className="images-navbar" /></Link>
                 </div> : 
                 <div className="navbar-nav nav-2 ">
                     <Link href="/register"><a className="nav-link" >Sign up</a></Link>
