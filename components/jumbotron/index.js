@@ -1,3 +1,4 @@
+
 export default function Jumbotron() {
     return (
         <section id="main-bg">
@@ -10,7 +11,7 @@ export default function Jumbotron() {
             <h3 className="main-description">Experience new traditional game</h3>
           </div>
           <div>
-            <a type="button" className="btn btn-warning tombol-1">Play now</a> 
+          <a  className="btn btn-warning tombol-1">Play now</a>
           </div>
           <div className="scroll-down-button">
             <h4 >The story</h4>

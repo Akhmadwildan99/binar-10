@@ -6,6 +6,7 @@ import Requirements from '../components/requirements';
 import TopScores from '../components/topScores';
 import Footer from '../components/footer';
 
+
 export default function Home() {
   return (
     <>

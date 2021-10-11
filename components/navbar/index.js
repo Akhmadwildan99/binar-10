@@ -46,15 +46,15 @@ function Navbar({isLogin,user, deleteUser, logout}) {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav nav-1 ">
-                    <Link href="/"><a className="nav-link">Home</a></Link>
-                    <a className="nav-link" >Work</a>
+                    <Link href="/#"><a className="nav-link">Home</a></Link>
+                    <Link href="/game"><a className="nav-link" >Game</a></Link>
                     <a className="nav-link" >Contact</a>
                     <a className="nav-link">About me</a>
                 </div>
                 {isLogin ? 
                 <div className="navbar-nav nav-2">
                     <a className="nav-link" onClick={logoutSystem}>Log out</a>
-                    <Link href="/playerGame"><img src={player ? player.imageUrl : "/images/avatar.png" } className="images-navbar" /></Link>
+                    <Link href="/playergame"><img src={player ? player.imageUrl : "/images/avatar.png" } className="images-navbar" /></Link>
                 </div> : 
                 <div className="navbar-nav nav-2 ">
                     <Link href="/register"><a className="nav-link" >Sign up</a></Link>
