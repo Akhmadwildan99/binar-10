@@ -19,26 +19,26 @@ const storageFire = getStorage(app);
 const db = getFirestore(app);
 export {app, storageFire, db}
 
-export async function setSignUp(email, password) {
-    const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log('user', user)
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('error', errorCode, errorMessage);
-    });
-}
+// export async function setSignUp(email, password) {
+//     const auth = getAuth();
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then((userCredential) => {
+//       const user = userCredential.user;
+//       console.log('user', user)
+//     })
+//     .catch((error) => {
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       console.log('error', errorCode, errorMessage);
+//     });
+// }
 
-export async function setSignIn(email, password) {
-    const auth = getAuth();
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    const response = res.user.uid;
-    return response;
-}
+// export async function setSignIn(email, password) {
+//     const auth = getAuth();
+//     const res = await signInWithEmailAndPassword(auth, email, password);
+//     const response = res.user.uid;
+//     return response;
+// }
 
 // export async function setAvatar(image, storageFire) {
 //   const storage = storageFire

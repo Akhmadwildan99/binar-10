@@ -1,5 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {app} from '../../firebase/firebase.config';
+import {app, db} from '../../firebase/firebase.config';
+import { doc, setDoc } from "firebase/firestore";
 import {PRO_LOADING, PRO_LOGIN, CHANGE_USER} from '../reducer/typeAction.js';
 
 
@@ -52,4 +53,21 @@ const loginAPI = (data) => (dispatch) => {
   })
 }
 
-export {registerAPI, loginAPI};
+const submitPlayer = (userId,data) => (dispatch) => {
+  dispatch({type:PRO_LOADING, value : true});
+  new Promise((resolve, reject) => {
+    setDoc(doc(db, "player-game", userId ), data)
+      .then((res) => {
+        console.log(res);
+        dispatch({ type:PRO_LOADING, value : false});
+        resolve();
+      })
+      .catch((err) => {
+        console.log('error', err);
+        dispatch({ type:PRO_LOADING, value : false});
+        reject();
+      })
+  })
+}
+
+export {registerAPI, loginAPI, submitPlayer};

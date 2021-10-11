@@ -1,12 +1,17 @@
-import {useState} from 'react';
-import { storageFire, db} from '../../firebase/firebase.config';
-import { doc, setDoc } from "firebase/firestore";
+import {useState, useEffect} from 'react';
+import { storageFire} from '../../firebase/firebase.config';
 import {  ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {submitPlayer} from '../../redux/action/index';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import Button from '../Button/button';
+import {useRouter} from 'next/router';
 
-export default function BodyPlayerGame() {
+function BodyPlayerGame({isLogin, user, submitPlayer, isLoading}) {
     const [name, setName] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [error, setError] = useState("");
+    const router =  useRouter();
 
     const handleImage = async (e) => {
         const select = e.target.files[0];
@@ -29,16 +34,22 @@ export default function BodyPlayerGame() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(name !== "" && imageUrl !== "") {
-            const id = localStorage.getItem("userId");
-            const userId = JSON.parse(id);
-            console.log(userId);
+            const userId = user.uid
             const data = {
-                name,
-                imageUrl,
+                email: user.user,
+                name: name,
+                imageUrl: imageUrl,
+                score: null,
+                play: null
             }
             try {
-                const res = await setDoc(doc(db, "player-game", userId ), data);
+                const res = await submitPlayer(userId, data);
                 console.log(res);
+                if(res) {
+                    setTimeout(() => {
+                        router.push('/')
+                    }, 2000)
+                }
             } catch (err) {
                 console.error("Error adding document: ", err);
             }
@@ -48,6 +59,13 @@ export default function BodyPlayerGame() {
         }
         
     }
+
+    useEffect(() => {
+        if(isLogin === false) {
+            router.push('/login');
+        }
+    }, [router, isLogin])
+
 
     return (
         <div className="body-bg">
@@ -69,13 +87,14 @@ export default function BodyPlayerGame() {
                         value={name}
                         onChange={(e) => setName(e.target.value)} 
                         required />
-                        <button 
+                        <Button onClick={handleSubmit} title={"Submit Data"} loading={isLoading}/>
+                        {/* <button 
                         className="button-register"
                         type="submit"
                         onClick={handleSubmit} 
                         >
                            Submit
-                        </button>
+                        </button> */}
                     </form>
                 </div>
                 <div className="img-side"></div>
@@ -83,3 +102,14 @@ export default function BodyPlayerGame() {
         </div>
     )
 }
+
+const reduxState = (state) => ({
+    user: state.reducUser.user,
+    isLogin: state.reducUser.isLogin,
+    isLoading: state.reducUser.isLoading
+});
+
+const reduxDispatch = (dispatch) => ({
+    submitPlayer: bindActionCreators(submitPlayer, dispatch)
+})
+export default connect(reduxState, reduxDispatch) (BodyPlayerGame)
