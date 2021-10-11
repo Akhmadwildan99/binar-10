@@ -19,10 +19,11 @@ function BodyLogin({isLogin, loginUserAPI, isLoading}) {
         } else {
           const data = {email, password}
           const auth = await loginUserAPI(data);
-          if(auth) {
+          console.log(auth);
+          setTimeout(() => {
             setPassword("");
             setemail("");
-          }
+          },1000)  
         }
       } catch (err) {
         console.log(err)

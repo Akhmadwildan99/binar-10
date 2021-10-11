@@ -1,12 +1,15 @@
 import {useState, useEffect} from 'react';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {connect} from 'react-redux';
 import { doc, getDoc } from "firebase/firestore";
-import {db} from '../../firebase/firebase.config'
+import {db} from '../../firebase/firebase.config';
+import {PRO_LOGIN, CHANGE_USER} from '../../redux/reducer/typeAction';
 
-function Navbar({isLogin,user}) {
+
+function Navbar({isLogin,user, deleteUser, logout}) {
     const [player, setPlayer] = useState({});
-    console.log(player)
+    const router = useRouter();
     
     useEffect(() => {
         const getDataPlayer = async () => {
@@ -22,10 +25,22 @@ function Navbar({isLogin,user}) {
 
     },[ user])
 
+    const logoutSystem = () => {
+        deleteUser();
+        logout();
+        setTimeout(() => {
+            router.push('/login')
+        }, 2000)
+    }
+
+    const logo = "logo";
+
     return (
     <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container">
-            <a className="navbar-brand" >{player ? player.name : Logo}</a>
+            {player ?
+             <a className="navbar-brand" >{player.name}</a>:
+             <a className="navbar-brand" >{logo}</a>}
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -38,7 +53,7 @@ function Navbar({isLogin,user}) {
                 </div>
                 {isLogin ? 
                 <div className="navbar-nav nav-2">
-                    <a className="nav-link" >Log out</a>
+                    <a className="nav-link" onClick={logoutSystem}>Log out</a>
                     <Link href="/playerGame"><img src={player ? player.imageUrl : "/images/avatar.png" } className="images-navbar" /></Link>
                 </div> : 
                 <div className="navbar-nav nav-2 ">
@@ -56,6 +71,11 @@ function Navbar({isLogin,user}) {
 const reduxState = (state) => ({
     isLogin: state.reducUser.isLogin,
     user: state.reducUser.user
+});
+
+const reduxDispatch = (dispatch) => ({
+    deleteUser: () => dispatch({type: CHANGE_USER, value : {}}),
+    logout: () => dispatch({type: PRO_LOGIN, value: false})
 })
 
-export default connect(reduxState, null) (Navbar)
+export default connect(reduxState, reduxDispatch) (Navbar)

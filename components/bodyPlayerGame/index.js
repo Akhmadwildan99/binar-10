@@ -45,11 +45,10 @@ function BodyPlayerGame({isLogin, user, submitPlayer, isLoading}) {
             try {
                 const res = await submitPlayer(userId, data);
                 console.log(res);
-                if(res) {
-                    setTimeout(() => {
-                        router.push('/')
-                    }, 2000)
-                }
+                setTimeout(() => {
+                    router.push('/');
+                }, 2000)
+            
             } catch (err) {
                 console.error("Error adding document: ", err);
             }
