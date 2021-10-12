@@ -39,8 +39,8 @@ function BodyPlayerGame({isLogin, user, submitPlayer, isLoading}) {
                 email: user.user,
                 name: name,
                 imageUrl: imageUrl,
-                score: null,
-                play: null
+                score: 0,
+                play: 0
             }
             try {
                 const res = await submitPlayer(userId, data);

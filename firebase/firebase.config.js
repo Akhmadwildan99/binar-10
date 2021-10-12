@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore } from 'firebase/firestore';
-import {getStorage} from 'firebase/storage'
+// import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
+import {getStorage} from 'firebase/storage';
 
 
 const firebaseConfig = {
@@ -50,3 +50,18 @@ export {app, storageFire, db}
 //   const url = await getDownloadURL(storageRef)
 //   return url
 // }
+
+export async function setGameWin(userId, data ) {
+  const washingtonRef = doc(db, "player-game", userId);
+  await updateDoc(washingtonRef, {
+    score: data
+  });
+}
+
+export async function setGamePlay(userId, data ) {
+  const washingtonRef = doc(db, "player-game", userId);
+  await updateDoc(washingtonRef, {
+    play: data
+  });
+}
+

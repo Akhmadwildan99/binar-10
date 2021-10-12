@@ -1,6 +1,3 @@
-// import {useState} from 'react'
-// import {  ref, uploadBytes, getDownloadURL} from "firebase/storage";
-// import {storageFire} from '../firebase/firebase.config';
 import Navbar from '../components/navbar';
 import BodyPlayerGame from '../components/bodyPlayerGame'
 

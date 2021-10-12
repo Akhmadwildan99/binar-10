@@ -5,7 +5,7 @@ import Com from '../components/Game/Com';
 import {connect} from 'react-redux';
 import {useRouter} from 'next/router'; 
 import { doc, getDoc } from "firebase/firestore";
-import {db} from '../firebase/firebase.config';
+import {db, setGameWin, setGamePlay} from '../firebase/firebase.config';
 
 
 function Game({isLogin, user}) {
@@ -24,7 +24,8 @@ function Game({isLogin, user}) {
     const [scoreCom, setScoreCom] = useState(0);
     const [dataPlayer, setDataPlayer] = useState({});
     const [currentScore, setCurrentScore] = useState(0);
-    const [room, setRoom] = useState(0)
+    const [room, setRoom] = useState(0);
+    const [playRoom, setPlayRoom] = useState(0);
     console.log(room);
     console.log(currentScore);
     
@@ -132,7 +133,8 @@ function Game({isLogin, user}) {
           const docRef = doc(db, 'player-game', user.uid);
           const get = await getDoc(docRef);
           setDataPlayer(get.data());
-          setCurrentScore(get.score);
+          setCurrentScore(get.data().score);
+          setPlayRoom(get.data().play);
         } catch (err) {
           console.log('error', err);
         }
@@ -152,6 +154,7 @@ function Game({isLogin, user}) {
         setScore(0)
         setScoreCom(0)
         setRoom(0)
+        
       }
 
       if( room === 5 && score > scoreCom) {
@@ -162,9 +165,13 @@ function Game({isLogin, user}) {
 
     const submitData = async () => {
       if(room === 5 && score > scoreCom) {
-        setCurrentScore(c => c +1);
-        // const response = await setGame(currentScore);
-        // console.log(response);
+        const response = await setGameWin(user.uid, currentScore);
+        console.log(response);
+      }
+      if(room === 5) {
+        setPlayRoom(s => s + 1);
+        const response = await setGamePlay(user.uid, playRoom);
+        console.log(response);
       }
       setRock(false)
       setPaper(false)
@@ -184,9 +191,14 @@ function Game({isLogin, user}) {
       }
     })
 
+    const gameQuitSubmit = async () => {
+      const response = await setGamePlay(user.uid, playRoom);
+      console.log(response);
+    }
+
     return (
     <section id="game-batu-kertas-gunting">
-      <Header />
+      <Header ronde={room}  play={playRoom} gameQuitSubmit={gameQuitSubmit}/>
       <div className="container">
         <div className="row">
           <Player dataPlayer={dataPlayer.name}  rock={rock} paper={paper} scissors={scissors} choices={choices} score={score} />
