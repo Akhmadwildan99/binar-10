@@ -49,7 +49,7 @@ function Navbar({isLogin,user, deleteUser, logout}) {
                     <Link href="/#"><a className="nav-link">Home</a></Link>
                     <Link href="/game"><a className="nav-link" >Game</a></Link>
                     <a className="nav-link" >Contact</a>
-                    <a className="nav-link">About me</a>
+                    <Link href="/videoInput"><a className="nav-link">video</a></Link>
                 </div>
                 {isLogin ? 
                 <div className="navbar-nav nav-2">
