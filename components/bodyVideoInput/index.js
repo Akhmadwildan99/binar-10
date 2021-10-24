@@ -2,61 +2,63 @@ import {useRef, useState, useEffect} from 'react';
 import { useRouter } from 'next/router';
 import {connect} from 'react-redux';
 import {db, storageFire} from '../../firebase/firebase.config';
-import {getDownloadURL, ref, uploadString} from '@firebase/storage';
-import { updateDoc } from '@firebase/firestore'
+import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
+import {  doc, updateDoc, serverTimestamp } from '@firebase/firestore'
 
 
 function BodyVideoInput({user, isLogin}) {
     const router = useRouter();
     const fileVideoRef = useRef(null);
     const filePosterRef = useRef(null);
-    const [selectVideo, setSelectVideo] = useState()
-    const [selectPoster, setSelectPoster] = useState()
+    const [videoUrl, setVideoUrl] = useState("")
+    const [posterUrl, setPosterUrl] = useState("")
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
+    const [success, setSuccess] = useState(false)
     
-    const submitPost = async () => {
+    const submitPost = async (e) => {
+      e.preventDefault();
+      if(title !== "" || des !== "") {
+        try {
+          const update = await updateDoc(doc(db, 'player-game', user.uid), {
+            videoUrl,
+            posterUrl,
+            title,
+            des,
+            timestamp: serverTimestamp(),
+          })
+          console.log(update);
+          setTimeout(() => {
+            setDes("");
+            setTitle("");
+            setSuccess(true);
+        }, 2000)
+        } catch (error) {
+          console.error("belum berhasil menambahkan video", error);
+        }
+      }
+      
+    }
+
+    const videoPost = async (e) => {
+      const selectVideoPick = e.target.files[0];
       const videoRef = ref(storageFire, `post/${user.uid}/video`);
-      const posterRef = ref(storageFire, `post/${user.uid}/poster`);
-      await uploadString(videoRef, selectVideo, "data_url").then(async snapshot => {
+      await uploadBytes(videoRef, selectVideoPick, "data_url").then(async snapshot => {
         const downloadVideoUrl = await getDownloadURL(videoRef);
+        setVideoUrl(downloadVideoUrl)
 
-        await updateDoc(doc(db, 'player-game', user.uid), {
-          videoUrl: downloadVideoUrl
-        })
       })
+    }
 
-      await uploadString(videoRef, selectPoster, "data_url").then(async snapshot => {
+    const posterPost = async (e) => {
+      const selectPoster = e.target.files[0];
+      const posterRef = ref(storageFire, `post/${user.uid}/poster`);
+      await uploadBytes(posterRef, selectPoster, "data_url").then(async snapshot => {
         const downloadPosterUrl = await getDownloadURL(posterRef);
+        setPosterUrl(downloadPosterUrl)
 
-        await updateDoc(doc(db, 'player-game', user.uid), {
-          posterUrl: downloadPosterUrl,
-          titleVideo: title,
-          desVideo: des
-        })
       })
-    }
 
-    const videoPost = (e) => {
-      const reader = new FileReader();
-      if(e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
-
-      reader.onload = (readerEvent) => {
-        setSelectVideo(readerEvent.target.result);
-      }
-    }
-
-    const posterPost = (e) => {
-      const reader = new FileReader();
-      if(e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
-
-      reader.onload = (readerEvent) => {
-        setSelectPoster(readerEvent.target.result);
-      }
     }
 
     useEffect(() => {
@@ -69,6 +71,7 @@ function BodyVideoInput({user, isLogin}) {
       <div className="form-container">
         <div className="form">
           <h1>Input Video</h1>
+          {success && <h3>Berhasil menambahkan video dan poster !!</h3>}
           <form>
             <div className="file-input">
                 <div className="file-video">
