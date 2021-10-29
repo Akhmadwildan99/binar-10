@@ -65,7 +65,7 @@ function BodyVideoInput({user, isLogin}) {
       if(isLogin === false) {
         router.push('/login');
       }
-    }, [])
+    }, [isLogin, router])
     return(
         <div className="body-bg">
       <div className="form-container">

@@ -25,7 +25,7 @@ export default function VideoDisplay() {
         } else {
             console.log('router belum bersedia')
         }
-    },[db])
+    },[isReady, query])
     return (
         <div>
             {/* Header */}
@@ -36,7 +36,6 @@ export default function VideoDisplay() {
                 <div className="video-player-container">
                     <Player
                     className="video-player"
-                    autoPlay
                     poster={video.posterUrl} 
                     src={video.videoUrl}>
                          <ControlBar>
