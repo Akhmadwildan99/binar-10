@@ -43,7 +43,7 @@ function BodyVideoInput({user, isLogin}) {
     const videoPost = async (e) => {
       const selectVideoPick = e.target.files[0];
       const videoRef = ref(storageFire, `post/${user.uid}/video`);
-      await uploadBytes(videoRef, selectVideoPick, "data_url").then(async snapshot => {
+      await uploadBytes(videoRef, selectVideoPick, "data_url").then(async () => {
         const downloadVideoUrl = await getDownloadURL(videoRef);
         setVideoUrl(downloadVideoUrl)
 
@@ -53,7 +53,7 @@ function BodyVideoInput({user, isLogin}) {
     const posterPost = async (e) => {
       const selectPoster = e.target.files[0];
       const posterRef = ref(storageFire, `post/${user.uid}/poster`);
-      await uploadBytes(posterRef, selectPoster, "data_url").then(async snapshot => {
+      await uploadBytes(posterRef, selectPoster, "data_url").then(async () => {
         const downloadPosterUrl = await getDownloadURL(posterRef);
         setPosterUrl(downloadPosterUrl)
 
