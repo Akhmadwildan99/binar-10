@@ -1,19 +1,19 @@
 #Node docker image
-image: node:v14.17.0
+image: node:14.17.0
 
 cache:
   paths: 
-    -node_modules/
+    - node_modules/
 
 #Job 1: install
 stages: 
-  -install
-  -deploy
+  - install
+  - deploy
 
 Install: 
   stage: install
   script: 
-    -yarn install
+    - yarn install
 
 #Job 2: deploy
 Production: 
