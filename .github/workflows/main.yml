@@ -26,4 +26,4 @@ Production:
     - app-get install -y ruby-dev
     - gem install dpl
     - dpl --provider=heroku --
-app=https://glacial-basin-37123.herokuapp.com/ --api-key=e46cef77-0a87-4749-8045-3c3e93362ace
+app=glacial-basin-37123.herokuapp.com --api-key=e46cef77-0a87-4749-8045-3c3e93362ace
