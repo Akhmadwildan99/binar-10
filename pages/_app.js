@@ -5,8 +5,6 @@ import '../styles/globals.css';
 import '../styles/video.css';
 import 'video-react/dist/video-react.css'
 import Head from 'next/head';
-import {AppProps} from 'next/app'
-import script from 'next/script';
 import {wrapper} from '../redux/store/index';
 
 
